@@ -19,6 +19,6 @@ public class ToDoRepository {
     }
 
     public void removeUsingStreams(String todoToRemove) {
-        toDos.removeIf(toDo -> toDo.getName().equals(todoToRemove));
+        toDos.removeIf(toDo -> toDo.getDescription().equals(todoToRemove));
     }
 }

@@ -1,26 +1,24 @@
 package dto;
 
 public class ToDo {
-    private String name;
+    private String description;
 
 
-    public ToDo(String name) {
-        this.name = name;
+    public ToDo(String description) {
+        this.description = description;
     }
 
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
     @Override
     public String toString() {
-        return name;
+        return description;
     }
 
     @Override
     public boolean equals (Object o) {
-
-
         if (this == o) {
             return true;
         }
@@ -32,8 +30,6 @@ public class ToDo {
         }
 
         final ToDo otherToDo = (ToDo) o;
-        return this.getName().equals(otherToDo.getName());
-
-
+        return this.getDescription().equals(otherToDo.getDescription());
     }
 }
