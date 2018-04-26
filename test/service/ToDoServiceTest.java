@@ -43,6 +43,6 @@ class ToDoServiceTest {
 
         service.removeSelectedToDo("toDoSecond");
 
-        assertEquals(asList(new ToDo("todo"), new ToDo ("toDoThird")), service.getAllToDos());
+        assertEquals(asList(new ToDo("toDo"), new ToDo ("toDoThird")), service.getAllToDos());
     }
 }
