@@ -15,12 +15,8 @@ class ToDoServiceTest {
         ToDoService service = new ToDoService();
 
         ToDo todo = new ToDo("toDoToTest");
+
         assertEquals(todo, service.createNewToDo("toDoToTest"));
-
-
-//        ToDo toDo = service.createNewToDo("toDoOne");
-//
-//        assertEquals("toDoOne", toDo.getName());
     }
 
     @Test
