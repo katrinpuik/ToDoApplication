@@ -2,10 +2,14 @@ package dto;
 
 public class ToDo {
     private String description;
+    private int id;
+    private static int idCounter = 0;
 
 
     public ToDo(String description) {
         this.description = description;
+        idCounter++;
+        id = idCounter;
     }
 
     public String getDescription() {
