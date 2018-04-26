@@ -41,4 +41,18 @@ class ToDoServiceTest {
 
         assertEquals(asList(new ToDo("toDo"), new ToDo ("toDoThird")), service.getAllToDos());
     }
+
+    @Test
+    void find (){
+        ToDoService service = new ToDoService();
+        service.saveToDoToRepository(new ToDo("toDo"));
+        service.saveToDoToRepository(new ToDo("toDoSecond"));
+        service.saveToDoToRepository(new ToDo("toDoThird"));
+        service.saveToDoToRepository(new ToDo("toDoFourth"));
+
+        assertEquals(asList(new ToDo("toDoThird")), service.findToDo("Third"));
+        assertEquals(asList(new ToDo("toDoThird")), service.findToDo("third"));
+        assertEquals(asList(new ToDo("toDo"), new ToDo("toDoSecond"), new ToDo("toDoThird"),new ToDo("toDoFourth")),
+                service.findToDo("Tod"));
+    }
 }

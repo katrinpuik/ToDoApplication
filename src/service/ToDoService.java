@@ -25,4 +25,8 @@ public class ToDoService {
         repository.removeUsingStreams(toDoToRemove);
     }
 
+    public List<ToDo> findToDo(String query) {
+        return repository.find(query);
+    }
+
 }

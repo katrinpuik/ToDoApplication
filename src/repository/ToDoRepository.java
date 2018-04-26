@@ -21,4 +21,14 @@ public class ToDoRepository {
     public void removeUsingStreams(String todoToRemove) {
         toDos.removeIf(toDo -> toDo.getDescription().equals(todoToRemove));
     }
+
+    public List<ToDo> find(String query){
+        List<ToDo> toDosFound = new ArrayList<>();
+        for (ToDo todo : toDos){
+            if (todo.getDescription().toLowerCase().contains(query.toLowerCase())){
+                toDosFound.add(todo);
+            }
+        }
+        return toDosFound;
+    }
 }

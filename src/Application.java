@@ -11,6 +11,6 @@ public class Application {
 
         service.removeSelectedToDo("ToDoToTestSecond");
 
-        System.out.println(service.getAllToDos());
+        System.out.println(service.findToDo("third"));
     }
 }
