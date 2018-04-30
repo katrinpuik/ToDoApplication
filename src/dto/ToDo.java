@@ -1,9 +1,12 @@
 package dto;
 
+
+import enums.Status;
+
 public class ToDo {
     private String description;
     private int id;
-    private boolean status;
+    private Status status;
 
     private static int ID_COUNTER;
 
@@ -24,25 +27,25 @@ public class ToDo {
         return id;
     }
 
-    public void setStatus(boolean status){
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
     @Override
     public String toString() {
-        if (status == false) {
-            return description + ", not done";
+        if (status != null) {
+            return description + ", " + status;
         } else {
-                return description + ", done";
-            }
+            return description + ", status undefined";
         }
+    }
 
     @Override
-    public boolean equals (Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }

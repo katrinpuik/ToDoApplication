@@ -1,4 +1,5 @@
 import dto.ToDo;
+import enums.Status;
 import service.ToDoService;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class Application {
 
         toDoService.save(third);
 
-        third.setStatus(true);
+        third.setStatus(Status.DONE);
         toDoService.save(third);
         System.out.println(third);
     }

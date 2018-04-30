@@ -1,8 +1,10 @@
 package dto;
 
+import enums.Status;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ToDoTest {
 
@@ -31,26 +33,34 @@ class ToDoTest {
     }
 
     @Test
-    void setStatusTrue() {
+    void setStatusDone() {
         ToDo first = new ToDo("toDoFirst");
-        first.setStatus(true);
+        first.setStatus(Status.DONE);
 
-        assertTrue(first.getStatus());
+        assertEquals(Status.DONE, first.getStatus());
     }
 
     @Test
-    void setStatusFalse() {
+    void setStatusNotDone() {
         ToDo first = new ToDo("toDoFirst");
-        first.setStatus(false);
+        first.setStatus(Status.NOT_DONE);
 
-        assertFalse(first.getStatus());
+        assertEquals(Status.NOT_DONE, first.getStatus());
     }
 
     @Test
-    void setStatusFalseByDefault() {
+    void setStatusDiscarded() {
+        ToDo first = new ToDo("toDoFirst");
+        first.setStatus(Status.DISCARDED);
+
+        assertEquals(Status.DISCARDED, first.getStatus());
+    }
+
+    @Test
+    void initialStatusIsNull() {
         ToDo first = new ToDo("toDoFirst");
 
-        assertFalse(first.getStatus());
+        assertNull(first.getStatus());
     }
 
 }
