@@ -3,20 +3,23 @@ package dto;
 public class ToDo {
     private String description;
     private int id;
-    private static int idCounter = 0;
 
+    private static int ID_COUNTER = 0;
 
     public ToDo(String description) {
+        this.id = getNextId();
         this.description = description;
-        idCounter++;
-        id = idCounter;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public int getId() {
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    int getId() {
         return id;
     }
 
@@ -38,6 +41,10 @@ public class ToDo {
         }
 
         final ToDo otherToDo = (ToDo) o;
-        return this.getDescription().equals(otherToDo.getDescription());
+        return this.id == otherToDo.getId();
+    }
+
+    private int getNextId() {
+        return ++ID_COUNTER;
     }
 }

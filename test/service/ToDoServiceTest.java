@@ -1,74 +1,91 @@
 package service;
 
 import dto.ToDo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 class ToDoServiceTest {
 
+    private ToDoService service;
+
+    @BeforeEach
+    void setUp() {
+        service = new ToDoService();
+    }
+
     @Test
     void createNewToDo() {
-        ToDoService service = new ToDoService();
+        ToDo result = service.create("toDoToTest");
 
-        ToDo todo = new ToDo("toDoToTest");
-
-        assertEquals(todo, service.createNewToDo("toDoToTest"));
+        assertEquals("toDoToTest", result.getDescription());
     }
 
     @Test
-    void getAllToDos() {
-        ToDoService service = new ToDoService();
-        service.saveToDoToRepository(new ToDo("toDo"));
-        service.saveToDoToRepository(new ToDo("toDoSecond"));
+    void saveAndGetAllToDos() {
+        ToDo toDo1 = new ToDo("toDo1");
+        service.save(toDo1);
+        ToDo toDo2 = new ToDo("toDo2");
+        service.save(toDo2);
 
-        List<ToDo> allToDos = service.getAllToDos();
+        List<ToDo> allToDos = service.getAll();
 
-        assertEquals(asList(new ToDo("toDo"), new ToDo("toDoSecond")), allToDos);
+        assertEquals(asList(toDo1, toDo2), allToDos);
     }
 
     @Test
-    void remove() {
-        ToDoService service = new ToDoService();
-        service.saveToDoToRepository(new ToDo("toDo"));
-        service.saveToDoToRepository(new ToDo("toDoSecond"));
-        service.saveToDoToRepository(new ToDo("toDoThird"));
+    void removeSelectedToDo() {
+        ToDo toDo1 = new ToDo("toDo1");
+        service.save(toDo1);
+        ToDo toDo2 = new ToDo("todo2");
+        service.save(toDo2);
+        ToDo toDo3 = new ToDo("todo3");
+        service.save(toDo3);
 
-        service.removeSelectedToDo("toDoSecond");
+        service.remove("todo2");
 
-        assertEquals(asList(new ToDo("toDo"), new ToDo ("toDoThird")), service.getAllToDos());
+        assertEquals(asList(toDo1, toDo3), service.getAll());
     }
 
     @Test
-    void find (){
-        ToDoService service = new ToDoService();
-        service.saveToDoToRepository(new ToDo("toDo"));
-        service.saveToDoToRepository(new ToDo("toDoSecond"));
-        service.saveToDoToRepository(new ToDo("toDoThird"));
-        service.saveToDoToRepository(new ToDo("toDoFourth"));
+    void findByExactDescription() {
+        ToDo toDo1 = new ToDo("toDo1");
+        service.save(toDo1);
+        ToDo toDo2 = new ToDo("todo2");
+        service.save(toDo2);
+        ToDo toDo3 = new ToDo("todo3");
+        service.save(toDo3);
 
-        assertEquals(asList(new ToDo("toDoThird")), service.findToDo("Third"));
-        assertEquals(asList(new ToDo("toDoThird")), service.findToDo("third"));
-        assertEquals(asList(new ToDo("toDo"), new ToDo("toDoSecond"), new ToDo("toDoThird"),new ToDo("toDoFourth")),
-                service.findToDo("Tod"));
+        assertEquals(singletonList(toDo2), service.findByDescription("toDo2"));
     }
 
     @Test
-    void testIdNumber(){
+    void findByExactDescriptionUpperCase() {
+        ToDo toDo1 = new ToDo("toDo1");
+        service.save(toDo1);
+        ToDo toDo2 = new ToDo("todo2");
+        service.save(toDo2);
+        ToDo toDo3 = new ToDo("todo3");
+        service.save(toDo3);
 
-        ToDo first = new ToDo("toDo");
-        ToDo second = new ToDo("toDoSecond");
-        ToDo third = new ToDo("toDoThird");
-        ToDo fourth = new ToDo("toDoFourth");
-
-        assertEquals(1, first.getId());
-        assertEquals(2, second.getId());
-        assertEquals(3, third.getId());
-        assertEquals(4, fourth.getId());
+        assertEquals(singletonList(toDo2), service.findByDescription("TODO2"));
     }
 
+    @Test
+    void findByDescriptionSomeLetters() {
+        ToDo toDo1 = new ToDo("toDo1");
+        service.save(toDo1);
+        ToDo toDo2 = new ToDo("todo2");
+        service.save(toDo2);
+        ToDo toDo3 = new ToDo("todo3");
+        service.save(toDo3);
 
+        assertEquals(asList(toDo1, toDo2, toDo3), service.findByDescription("tod"));
+    }
 }

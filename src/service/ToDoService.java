@@ -9,24 +9,23 @@ public class ToDoService {
 
     private ToDoRepository repository = new ToDoRepository();
 
-    public ToDo createNewToDo(String name) {
-        return new ToDo(name);
+    public ToDo create(String description) {
+        return new ToDo(description);
     }
 
-    public void saveToDoToRepository(ToDo todo) {
+    public void save(ToDo todo) {
         repository.save(todo);
     }
 
-    public List<ToDo> getAllToDos() {
+    List<ToDo> getAll() {
         return repository.getAll();
     }
 
-    public void removeSelectedToDo(String toDoToRemove) {
-        repository.removeUsingStreams(toDoToRemove);
+    public void remove(String toDoToRemove) {
+        repository.remove(toDoToRemove);
     }
 
-    public List<ToDo> findToDo(String query) {
-        return repository.find(query);
+    public List<ToDo> findByDescription(String description) {
+        return repository.findByDescription(description);
     }
-
 }

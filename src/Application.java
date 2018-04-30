@@ -1,16 +1,25 @@
+import dto.ToDo;
 import service.ToDoService;
+
+import java.util.List;
 
 public class Application {
 
-    private static ToDoService service = new ToDoService();
+    private static ToDoService toDoService = new ToDoService();
 
     public static void main(String[] args) {
-        service.saveToDoToRepository(service.createNewToDo("ToDoToTest"));
-        service.saveToDoToRepository(service.createNewToDo("ToDoToTestSecond"));
-        service.saveToDoToRepository(service.createNewToDo("ToDoToTestThird"));
+        toDoService.save(toDoService.create("ToDoToTest"));
+        toDoService.save(toDoService.create("ToDoToTestSecond"));
+        toDoService.save(toDoService.create("ToDoToTestThird"));
 
-        service.removeSelectedToDo("ToDoToTestSecond");
+        toDoService.remove("ToDoToTestSecond");
 
-        System.out.println(service.findToDo("third"));
+        List<ToDo> result = toDoService.findByDescription("third");
+        ToDo third = result.get(0);
+
+        System.out.println(third);
+
+        third.setDescription("new description");
+        toDoService.save(third);
     }
 }
