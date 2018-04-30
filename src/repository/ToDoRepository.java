@@ -16,9 +16,7 @@ public class ToDoRepository {
             toDos.remove(todo);
         }
         toDos.add(todo);
-
     }
-
 
 
     public List<ToDo> getAll() {

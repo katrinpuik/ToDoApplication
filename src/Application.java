@@ -20,6 +20,11 @@ public class Application {
         System.out.println(third);
 
         third.setDescription("new description");
+
         toDoService.save(third);
+
+        third.setStatus(true);
+        toDoService.save(third);
+        System.out.println(third);
     }
 }

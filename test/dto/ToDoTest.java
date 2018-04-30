@@ -2,7 +2,7 @@ package dto;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ToDoTest {
 
@@ -28,6 +28,29 @@ class ToDoTest {
 
         assertEquals("toDoFirst", first.getDescription());
         assertEquals("toDoSecond", second.getDescription());
+    }
+
+    @Test
+    void setStatusTrue() {
+        ToDo first = new ToDo("toDoFirst");
+        first.setStatus(true);
+
+        assertTrue(first.getStatus());
+    }
+
+    @Test
+    void setStatusFalse() {
+        ToDo first = new ToDo("toDoFirst");
+        first.setStatus(false);
+
+        assertFalse(first.getStatus());
+    }
+
+    @Test
+    void setStatusFalseByDefault() {
+        ToDo first = new ToDo("toDoFirst");
+
+        assertFalse(first.getStatus());
     }
 
 }

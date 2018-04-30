@@ -3,8 +3,9 @@ package dto;
 public class ToDo {
     private String description;
     private int id;
+    private boolean status;
 
-    private static int ID_COUNTER = 0;
+    private static int ID_COUNTER;
 
     public ToDo(String description) {
         this.id = getNextId();
@@ -23,10 +24,22 @@ public class ToDo {
         return id;
     }
 
+    public void setStatus(boolean status){
+        this.status = status;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
     @Override
     public String toString() {
-        return description;
-    }
+        if (status == false) {
+            return description + ", not done";
+        } else {
+                return description + ", done";
+            }
+        }
 
     @Override
     public boolean equals (Object o) {
