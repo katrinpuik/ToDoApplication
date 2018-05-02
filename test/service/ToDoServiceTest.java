@@ -2,6 +2,7 @@ package service;
 
 import dto.ToDo;
 import enums.Status;
+import exception.ServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +11,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class ToDoServiceTest {
@@ -108,7 +110,6 @@ class ToDoServiceTest {
     }
 
 
-
     @Test
     void findByStatusNotDone() {
         service.save(createToDo(Status.DISCARDED));
@@ -131,5 +132,30 @@ class ToDoServiceTest {
         assertEquals(toDo, service.findByStatus(Status.DISCARDED).get(0));
     }
 
+    @Test
+    void validateAndCreateStatusDone() throws ServiceException {
+        assertEquals(Status.DONE, service.validateAndCreateStatus("done"));
+    }
+
+    @Test
+    void validateAndCreateStatusNotDone() throws ServiceException {
+        assertEquals(Status.NOT_DONE, service.validateAndCreateStatus("NOT_DONE"));
+    }
+
+    @Test
+    void validateAndCreateStatusDiscarded() throws ServiceException {
+        assertEquals(Status.DISCARDED, service.validateAndCreateStatus("disCARdeD"));
+    }
+
+    @Test
+    void validateAndCreateThrowsExceptionWhenUnableToMapEnum() {
+        Throwable exception = assertThrows(Exception.class, () -> service.validateAndCreateStatus("xxx"));
+        assertEquals("Invalid input", exception.getMessage());
+    }
+
+    @Test
+    void validateAndCreateStatusIfInputIsNull() throws ServiceException {
+        assertEquals(null, service.validateAndCreateStatus(null));
+    }
 
 }

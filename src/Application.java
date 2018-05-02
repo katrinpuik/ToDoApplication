@@ -1,5 +1,6 @@
 import dto.ToDo;
 import enums.Status;
+import exception.ServiceException;
 import service.ToDoService;
 
 import java.util.List;
@@ -24,7 +25,12 @@ public class Application {
 
         toDoService.save(third);
 
-        third.setStatus(Status.DONE);
+        try {
+            third.setStatus(toDoService.validateAndCreateStatus("done"));
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+
         toDoService.save(third);
         System.out.println(third);
 
@@ -32,5 +38,7 @@ public class Application {
 
         ToDo toDoDone = results2.get(0);
         System.out.println(toDoDone);
+
+
     }
 }

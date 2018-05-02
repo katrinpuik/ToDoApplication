@@ -2,6 +2,7 @@ package service;
 
 import dto.ToDo;
 import enums.Status;
+import exception.ServiceException;
 import repository.ToDoRepository;
 
 import java.util.List;
@@ -34,8 +35,16 @@ public class ToDoService {
         return repository.findByStatus(status);
     }
 
-    //kirjutada meetod, mis v]tab sisse stringi ja vaatab, kas sellest saab teha vastava enumi, ja kui saab teha, siis teeb,
-    // kui ei saa siis annab veateate.
+    public Status validateAndCreateStatus(String enumToCreate) throws ServiceException {
+        if (enumToCreate == null) {
+            return null;
+        }
+
+        try {
+            return Status.valueOf(enumToCreate.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new ServiceException("Invalid input");
+        }
+    }
+
 }
-
-
