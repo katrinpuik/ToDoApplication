@@ -1,6 +1,7 @@
 package repository;
 
 import dto.ToDo;
+import enums.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,5 +34,10 @@ public class ToDoRepository {
         return toDos.stream()
                 .filter(toDo -> toDo.getDescription().toLowerCase().contains(description.toLowerCase()))
                 .collect(Collectors.toList());
+    }
+
+    public List<ToDo> findByStatus(Status status) {
+        return toDos.stream()
+                .filter(toDo -> status.equals(toDo.getStatus())).collect(Collectors.toList());
     }
 }

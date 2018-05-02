@@ -27,5 +27,10 @@ public class Application {
         third.setStatus(Status.DONE);
         toDoService.save(third);
         System.out.println(third);
+
+        List<ToDo> results2 = toDoService.findByStatus(Status.DONE);
+
+        ToDo toDoDone = results2.get(0);
+        System.out.println(toDoDone);
     }
 }

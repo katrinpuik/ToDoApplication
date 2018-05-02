@@ -1,6 +1,7 @@
 package service;
 
 import dto.ToDo;
+import enums.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -88,4 +89,47 @@ class ToDoServiceTest {
 
         assertEquals(asList(toDo1, toDo2, toDo3), service.findByDescription("tod"));
     }
+
+    private ToDo createToDo(Status status) {
+        ToDo toDo = new ToDo("toDo");
+        toDo.setStatus(status);
+        return toDo;
+    }
+
+    @Test
+    void findByStatusDone() {
+        service.save(createToDo(Status.DISCARDED));
+        ToDo toDo = createToDo(Status.DONE);
+        service.save(toDo);
+        service.save(createToDo(Status.NOT_DONE));
+
+        assertEquals(1, service.findByStatus(Status.DONE).size());
+        assertEquals(toDo, service.findByStatus(Status.DONE).get(0));
+    }
+
+
+
+    @Test
+    void findByStatusNotDone() {
+        service.save(createToDo(Status.DISCARDED));
+        ToDo toDo = createToDo(Status.NOT_DONE);
+        service.save(toDo);
+        service.save(createToDo(Status.DONE));
+
+        assertEquals(1, service.findByStatus(Status.NOT_DONE).size());
+        assertEquals(toDo, service.findByStatus(Status.NOT_DONE).get(0));
+    }
+
+    @Test
+    void findByStatusDiscarded() {
+        service.save(createToDo(Status.NOT_DONE));
+        ToDo toDo = createToDo(Status.DISCARDED);
+        service.save(toDo);
+        service.save(createToDo(Status.DONE));
+
+        assertEquals(1, service.findByStatus(Status.DISCARDED).size());
+        assertEquals(toDo, service.findByStatus(Status.DISCARDED).get(0));
+    }
+
+
 }

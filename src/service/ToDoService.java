@@ -1,6 +1,7 @@
 package service;
 
 import dto.ToDo;
+import enums.Status;
 import repository.ToDoRepository;
 
 import java.util.List;
@@ -28,4 +29,13 @@ public class ToDoService {
     public List<ToDo> findByDescription(String description) {
         return repository.findByDescription(description);
     }
+
+    public List<ToDo> findByStatus(Status status) {
+        return repository.findByStatus(status);
+    }
+
+    //kirjutada meetod, mis v]tab sisse stringi ja vaatab, kas sellest saab teha vastava enumi, ja kui saab teha, siis teeb,
+    // kui ei saa siis annab veateate.
 }
+
+
