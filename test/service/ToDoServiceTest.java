@@ -43,6 +43,20 @@ class ToDoServiceTest {
     }
 
     @Test
+    void saveToDoWithDifferentDescription() {
+        ToDo toDo = new ToDo("toDo1");
+        service.save(toDo);
+        toDo.setDescription("new description");
+        service.save(toDo);
+
+        List<ToDo> allToDos = service.getAll();
+
+        assertEquals(1, allToDos.size());
+        ToDo updatedToDo = allToDos.get(0);
+        assertEquals("new description", updatedToDo.getDescription());
+    }
+
+    @Test
     void removeSelectedToDo() {
         ToDo toDo1 = new ToDo("toDo1");
         service.save(toDo1);
@@ -60,9 +74,9 @@ class ToDoServiceTest {
     void findByExactDescription() {
         ToDo toDo1 = new ToDo("toDo1");
         service.save(toDo1);
-        ToDo toDo2 = new ToDo("todo2");
+        ToDo toDo2 = new ToDo("toDo2");
         service.save(toDo2);
-        ToDo toDo3 = new ToDo("todo3");
+        ToDo toDo3 = new ToDo("toDo3");
         service.save(toDo3);
 
         assertEquals(singletonList(toDo2), service.findByDescription("toDo2"));
@@ -92,12 +106,6 @@ class ToDoServiceTest {
         assertEquals(asList(toDo1, toDo2, toDo3), service.findByDescription("tod"));
     }
 
-    private ToDo createToDo(Status status) {
-        ToDo toDo = new ToDo("toDo");
-        toDo.setStatus(status);
-        return toDo;
-    }
-
     @Test
     void findByStatusDone() {
         service.save(createToDo(Status.DISCARDED));
@@ -109,7 +117,6 @@ class ToDoServiceTest {
         assertEquals(toDo, service.findByStatus(Status.DONE).get(0));
     }
 
-
     @Test
     void findByStatusNotDone() {
         service.save(createToDo(Status.DISCARDED));
@@ -120,6 +127,7 @@ class ToDoServiceTest {
         assertEquals(1, service.findByStatus(Status.NOT_DONE).size());
         assertEquals(toDo, service.findByStatus(Status.NOT_DONE).get(0));
     }
+
 
     @Test
     void findByStatusDiscarded() {
@@ -156,6 +164,12 @@ class ToDoServiceTest {
     @Test
     void validateAndCreateStatusIfInputIsNull() throws ServiceException {
         assertEquals(null, service.validateAndCreateStatus(null));
+    }
+
+    private ToDo createToDo(Status status) {
+        ToDo toDo = new ToDo("toDo");
+        toDo.setStatus(status);
+        return toDo;
     }
 
 }
