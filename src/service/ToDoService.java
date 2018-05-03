@@ -3,35 +3,48 @@ package service;
 import dto.ToDo;
 import enums.Status;
 import exception.ServiceException;
+import repository.ToDoRepository;
 
 import java.util.List;
 
+import static enums.Status.valueOf;
+
 public class ToDoService {
 
+    private ToDoRepository repository = new ToDoRepository();
+
     public ToDo create(String description) {
-        return null;
+        return new ToDo(description);
     }
 
     public void save(ToDo todo) {
+        repository.save(todo);
     }
 
     public List<ToDo> getAll() {
-        return null;
+        return repository.getAll();
     }
 
     public void remove(String toDoToRemove) {
+        repository.remove(toDoToRemove);
     }
 
     public List<ToDo> findByDescription(String description) {
-        return null;
+        return repository.findByDescription(description);
     }
 
     public List<ToDo> findByStatus(Status status) {
-        return null;
+        return repository.findByStatus(status);
     }
 
     public Status validateAndCreateStatus(String enumToCreate) throws ServiceException {
-        return null;
+        if (enumToCreate == null) {
+            return null;
+        }
+        try {
+            return valueOf(enumToCreate.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new ServiceException("Invalid input");
+        }
     }
-
 }

@@ -5,32 +5,26 @@ import enums.Status;
 
 public class ToDo {
     private String description;
-    private int id;
     private Status status;
 
-    private static int ID_COUNTER;
-
     public ToDo(String description) {
-
+        this.description = description;
     }
 
     public String getDescription() {
-        return null;
+        return description;
     }
 
     public void setDescription(String description) {
-    }
-
-    int getId() {
-        return 0;
-    }
-
-    public void setStatus(Status status) {
-
+        this.description = description;
     }
 
     public Status getStatus() {
-        return null;
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
 }
