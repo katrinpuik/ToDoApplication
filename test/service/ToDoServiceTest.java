@@ -157,7 +157,7 @@ class ToDoServiceTest {
 
     @Test
     void validateAndCreateThrowsExceptionWhenUnableToMapEnum() {
-        Throwable exception = assertThrows(Exception.class, () -> service.validateAndCreateStatus("xxx"));
+        Throwable exception = assertThrows(ServiceException.class, () -> service.validateAndCreateStatus("xxx"));
         assertEquals("Invalid input", exception.getMessage());
     }
 
