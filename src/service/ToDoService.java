@@ -19,7 +19,7 @@ public class ToDoService {
         repository.save(todo);
     }
 
-    List<ToDo> getAll() {
+    public List<ToDo> getAll() {
         return repository.getAll();
     }
 
