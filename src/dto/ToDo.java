@@ -11,56 +11,26 @@ public class ToDo {
     private static int ID_COUNTER;
 
     public ToDo(String description) {
-        this.id = getNextId();
-        this.description = description;
+
     }
 
     public String getDescription() {
-        return description;
+        return null;
     }
 
     public void setDescription(String description) {
-        this.description = description;
     }
 
     int getId() {
-        return id;
+        return 0;
     }
 
     public void setStatus(Status status) {
-        this.status = status;
+
     }
 
     public Status getStatus() {
-        return status;
+        return null;
     }
 
-    @Override
-    public String toString() {
-        if (status != null) {
-            return description + ", " + status;
-        } else {
-            return description + ", status undefined";
-        }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null) {
-            return false;
-        }
-        if (getClass() != o.getClass()) {
-            return false;
-        }
-
-        final ToDo otherToDo = (ToDo) o;
-        return this.id == otherToDo.getId();
-    }
-
-    private int getNextId() {
-        return ++ID_COUNTER;
-    }
 }
