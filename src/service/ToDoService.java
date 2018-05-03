@@ -39,7 +39,6 @@ public class ToDoService {
         if (enumToCreate == null) {
             return null;
         }
-
         try {
             return Status.valueOf(enumToCreate.toUpperCase());
         } catch (IllegalArgumentException e) {
