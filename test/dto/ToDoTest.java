@@ -18,6 +18,13 @@ class ToDoTest {
     }
 
     @Test
+    void descriptionNull() {
+        ToDo toDo = new ToDo(null);
+
+        assertNull(toDo.getDescription());
+    }
+
+    @Test
     void setStatusDone() {
         ToDo first = new ToDo("toDoFirst");
         first.setStatus(Status.DONE);

@@ -54,7 +54,7 @@ public class toDoMapperTest {
 
         List<ToDo> toDos = mapper.deserialize(controlList);
 
-        assertEquals("Read a book,", toDos.get(0).getDescription());
+        assertEquals("Read a book", toDos.get(0).getDescription());
         assertNull(toDos.get(0).getStatus());
     }
 
