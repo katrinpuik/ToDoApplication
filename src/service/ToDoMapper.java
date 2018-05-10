@@ -5,7 +5,6 @@ import enums.Status;
 import exception.ServiceException;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 class ToDoMapper {
@@ -14,12 +13,14 @@ class ToDoMapper {
 
 
     List<ToDo> deserialize(List<String> stringList) {
-        return stringList.stream().map((String row) -> {
-            String[] split = row.split(",", -1);
-            String description = (split[0].isEmpty()) ? null : split[0];
-            String status = (split[1].isEmpty()) ? null : split[1];
-            return createToDo(description, status);
-        }).filter(Objects::nonNull).collect(Collectors.toList());
+        return stringList.stream()
+                .map((String row) -> {
+                    String[] split = row.split(",", -1);
+                    String description = split[0].isEmpty() ? null : split[0];
+                    String status = split[1].isEmpty() ? null : split[1];
+                    return createToDo(description, status);
+                })
+                .collect(Collectors.toList());
     }
 
     private ToDo createToDo(String description, String status) {
@@ -35,5 +36,15 @@ class ToDoMapper {
             System.out.println("Unable to create toDo with status: " + status);
             return null;
         }
+    }
+
+    List<String> serialize(List<ToDo> toDoList) {
+        return toDoList.stream()
+                .map(toDo -> {
+                    String description = toDo.getDescription() == null ? "" : toDo.getDescription();
+                    String status = toDo.getStatus() == null ? "" : String.valueOf(toDo.getStatus());
+                    return description + "," + status;
+                })
+                .collect(Collectors.toList());
     }
 }

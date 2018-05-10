@@ -9,6 +9,7 @@ import java.util.List;
 
 import static enums.Status.DONE;
 import static enums.Status.NOT_DONE;
+import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -78,5 +79,54 @@ public class toDoMapperTest {
 
         assertNull(toDos.get(0).getDescription());
         assertNull(toDos.get(0).getStatus());
+    }
+
+    @Test
+    void serialize() {
+        List<ToDo> controlList = new ArrayList<>();
+
+        ToDo toDo1 = new ToDo("Read a book");
+        toDo1.setStatus(DONE);
+        controlList.add(toDo1);
+
+        ToDo toDo2 = new ToDo("Take a break");
+        toDo2.setStatus(NOT_DONE);
+        controlList.add(toDo2);
+
+        List<String> toDosAsStrings = mapper.serialize(controlList);
+
+        assertEquals(2, toDosAsStrings.size());
+        assertEquals("Read a book,DONE", toDosAsStrings.get(0));
+        assertEquals("Take a break,NOT_DONE", toDosAsStrings.get(1));
+    }
+
+    @Test
+    void serializeIfDescriptionIsNull() {
+        ToDo toDo = new ToDo(null);
+        toDo.setStatus(DONE);
+
+        List<String> toDosAsStrings = mapper.serialize(singletonList(toDo));
+
+        assertEquals(",DONE", toDosAsStrings.get(0));
+    }
+
+    @Test
+    void serialiseIfStatusIsNull() {
+        ToDo toDo = new ToDo("Read a book");
+        toDo.setStatus(null);
+
+        List<String> toDosAsStrings = mapper.serialize(singletonList(toDo));
+
+        assertEquals("Read a book,", toDosAsStrings.get(0));
+    }
+
+    @Test
+    void serializeIfDescriptionAndStatusAreNull() {
+        ToDo toDo = new ToDo(null);
+        toDo.setStatus(null);
+
+        List<String> toDosAsStrings = mapper.serialize(singletonList(toDo));
+
+        assertEquals(",", toDosAsStrings.get(0));
     }
 }
