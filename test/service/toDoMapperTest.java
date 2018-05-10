@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static enums.Status.DONE;
-import static enums.Status.NOT_DONE;
+import static enums.Status.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -67,5 +66,19 @@ public class toDoMapperTest {
 
         assertNull(toDos.get(0).getDescription());
         assertNull(toDos.get(0).getStatus());
+    }
+
+    @Test
+    void deserializeIfFailesToCreateToDos() {
+        List<String> controlList = new ArrayList<>();
+        controlList.add("Read a book, DONE");
+        controlList.add("lkjh,lkj");
+        controlList.add("Go out, discarded");
+
+        List<ToDo> toDos = mapper.deserialize(controlList);
+
+        assertEquals(2, toDos.size());
+        assertEquals("Read a book", toDos.get(0).getDescription());
+        assertEquals(DISCARDED, toDos.get(1).getStatus());
     }
 }

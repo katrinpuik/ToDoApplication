@@ -4,6 +4,7 @@ import dto.ToDo;
 import exception.ServiceException;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 class ToDoMapper {
@@ -17,24 +18,25 @@ class ToDoMapper {
                     if (split[0].equals("") && split[1].equals("")) {
                         return new ToDo(null);
                     } else if (split[0].equals("")) {
-                        ToDo toDo = new ToDo(null);
-                        try {
-                            toDo.setStatus(service.validateAndCreateStatus(split[1].trim()));
-                        } catch (ServiceException e) {
-                            throw new RuntimeException("");
-                        }
-                        return toDo;
+                        String status = split[1];
+                        return createToDo(null, status);
                     } else if (split[1].equals("")) {
                         return new ToDo(split[0]);
                     } else {
-                        ToDo toDo = new ToDo(split[0]);
-                        try {
-                            toDo.setStatus(service.validateAndCreateStatus(split[1].trim()));
-                        } catch (ServiceException e) {
-                            e.printStackTrace();
-                        }
-                        return toDo;
+                        String description = split[0];
+                        String status = split[1];
+                        return createToDo(description, status);
                     }
-                }).collect(Collectors.toList());
+                }).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    private ToDo createToDo(String description, String status) {
+        try {
+            ToDo toDo = new ToDo(description);
+            toDo.setStatus(service.validateAndCreateStatus(status.trim()));
+            return toDo;
+        } catch (ServiceException e) {
+            return null;
+        }
     }
 }
