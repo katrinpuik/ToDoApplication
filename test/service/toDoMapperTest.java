@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static enums.Status.*;
+import static enums.Status.DONE;
+import static enums.Status.NOT_DONE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -23,8 +24,8 @@ public class toDoMapperTest {
     @Test
     void deserialize() {
         List<String> controlList = new ArrayList<>();
-        controlList.add("Read a book, DONE");
-        controlList.add("Take a break, NOT_DONE");
+        controlList.add("Read a book,DONE");
+        controlList.add("Take a break,NOT_DONE");
 
         List<ToDo> toDos = mapper.deserialize(controlList);
 
@@ -38,7 +39,7 @@ public class toDoMapperTest {
     @Test
     void deserializeIfDescriptionIsNull() {
         List<String> controlList = new ArrayList<>();
-        controlList.add(", DONE");
+        controlList.add(",DONE");
 
         List<ToDo> toDos = mapper.deserialize(controlList);
 
@@ -58,6 +59,17 @@ public class toDoMapperTest {
     }
 
     @Test
+    void deserializeIfStatusIsInvalid() {
+        List<String> controlList = new ArrayList<>();
+        controlList.add("Read a book,wrg");
+
+        List<ToDo> toDos = mapper.deserialize(controlList);
+
+        assertEquals("Read a book", toDos.get(0).getDescription());
+        assertNull(toDos.get(0).getStatus());
+    }
+
+    @Test
     void deserializeIfDescriptionIsNullAndStatusIsNull() {
         List<String> controlList = new ArrayList<>();
         controlList.add(",");
@@ -66,19 +78,5 @@ public class toDoMapperTest {
 
         assertNull(toDos.get(0).getDescription());
         assertNull(toDos.get(0).getStatus());
-    }
-
-    @Test
-    void deserializeIfFailesToCreateToDos() {
-        List<String> controlList = new ArrayList<>();
-        controlList.add("Read a book, DONE");
-        controlList.add("lkjh,lkj");
-        controlList.add("Go out, discarded");
-
-        List<ToDo> toDos = mapper.deserialize(controlList);
-
-        assertEquals(2, toDos.size());
-        assertEquals("Read a book", toDos.get(0).getDescription());
-        assertEquals(DISCARDED, toDos.get(1).getStatus());
     }
 }
