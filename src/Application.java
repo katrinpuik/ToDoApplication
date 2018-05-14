@@ -1,44 +1,54 @@
 import dto.ToDo;
 import enums.Status;
 import exception.ServiceException;
+import helper.ReadingAndWritingToFileHelper;
+import service.ToDoMapper;
 import service.ToDoService;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Application {
 
     private static ToDoService toDoService = new ToDoService();
+    private static ReadingAndWritingToFileHelper helper = new ReadingAndWritingToFileHelper();
+    private static ToDoMapper mapper = new ToDoMapper();
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
+        mapper.deserialize(helper.initStringsFromFile())
+                .forEach(toDoFromFile -> toDoService.save(toDoFromFile));
+        toDoService.getAll().forEach(System.out::println);
+        runProgram();
+        toDoService.getAll().forEach(System.out::println);
+        helper.writeRowsToFile(mapper.serialize(toDoService.getAll()));
+    }
+
+    private static void runProgram() {
         toDoService.save(toDoService.create("ToDoToTest"));
         toDoService.save(toDoService.create("ToDoToTestSecond"));
-        toDoService.save(toDoService.create("ToDoToTestThird"));
+        toDoService.getAll().forEach(System.out::println);
+        toDoService.remove("stuff");
+        toDoService.remove("sth");
+        toDoService.getAll().forEach(System.out::println);
 
-        toDoService.remove("ToDoToTestSecond");
-
-        List<ToDo> result = toDoService.findByDescription("third");
-        ToDo third = result.get(0);
-
-        System.out.println(third);
-
-        third.setDescription("new description");
-
-        toDoService.save(third);
-
+        List<ToDo> result = toDoService.findByDescription("ara nae vaeva");
+        ToDo toDoFoundByDescription = result.get(0);
+        System.out.println(toDoFoundByDescription);
+        toDoFoundByDescription.setDescription("new description");
+        toDoService.save(toDoFoundByDescription);
         try {
-            third.setStatus(toDoService.validateAndCreateStatus("done"));
+            toDoFoundByDescription.setStatus(toDoService.validateAndCreateStatus("done"));
         } catch (ServiceException e) {
-            e.printStackTrace();
+            System.out.println("invalid enum type inserted");
         }
-
-        toDoService.save(third);
-        System.out.println(third);
+        toDoService.save(toDoFoundByDescription);
+        System.out.println(toDoFoundByDescription);
 
         List<ToDo> results2 = toDoService.findByStatus(Status.DONE);
-
         ToDo toDoDone = results2.get(0);
         System.out.println(toDoDone);
-
-
     }
+
+
 }
