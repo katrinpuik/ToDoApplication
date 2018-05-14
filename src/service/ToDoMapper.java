@@ -7,12 +7,22 @@ import exception.ServiceException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class ToDoMapper {
+public class ToDoMapper {
 
     private ToDoService service = new ToDoService();
 
 
-    List<ToDo> deserialize(List<String> stringList) {
+    public List<String> serialize(List<ToDo> toDoList) {
+        return toDoList.stream()
+                .map(toDo -> {
+                    String description = toDo.getDescription() == null ? "" : toDo.getDescription();
+                    String status = toDo.getStatus() == null ? "" : String.valueOf(toDo.getStatus());
+                    return description + "," + status;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<ToDo> deserialize(List<String> stringList) {
         return stringList.stream()
                 .map((String row) -> {
                     String[] split = row.split(",", -1);
@@ -36,15 +46,5 @@ class ToDoMapper {
             System.out.println("Unable to create toDo with status: " + status);
             return null;
         }
-    }
-
-    List<String> serialize(List<ToDo> toDoList) {
-        return toDoList.stream()
-                .map(toDo -> {
-                    String description = toDo.getDescription() == null ? "" : toDo.getDescription();
-                    String status = toDo.getStatus() == null ? "" : String.valueOf(toDo.getStatus());
-                    return description + "," + status;
-                })
-                .collect(Collectors.toList());
     }
 }

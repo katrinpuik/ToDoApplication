@@ -27,4 +27,9 @@ public class ToDo {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return description + ", " + String.valueOf(status);
+    }
+
 }
