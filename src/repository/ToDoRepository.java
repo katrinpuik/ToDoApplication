@@ -24,18 +24,18 @@ public class ToDoRepository {
     }
 
     public void remove(String toDoToRemove) {
-        toDos.removeIf(toDo -> toDo.getDescription().equals(toDoToRemove));
+        toDos.removeIf((ToDo toDo) -> toDo.getDescription() == null || toDo.getDescription().equals(toDoToRemove));
     }
 
     public List<ToDo> findByDescription(String description) {
         return toDos.stream()
-                .filter(toDo -> toDo.getDescription().toLowerCase().contains(description.toLowerCase()))
+                .filter(toDo -> toDo.getDescription() == null || toDo.getDescription().toLowerCase().contains(description.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     public List<ToDo> findByStatus(Status status) {
         return toDos.stream()
-                .filter(toDo -> toDo.getStatus().equals(status))
+                .filter(toDo -> toDo.getStatus() == null || toDo.getStatus().equals(status))
                 .collect(Collectors.toList());
     }
 }

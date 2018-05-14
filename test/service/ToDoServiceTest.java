@@ -71,6 +71,20 @@ class ToDoServiceTest {
     }
 
     @Test
+    void removeIfDescriptionIsNull () {
+        ToDo toDo1 = new ToDo("toDo1");
+        service.save(toDo1);
+        ToDo toDo2 = new ToDo(null);
+        service.save(toDo2);
+        ToDo toDo3 = new ToDo("todo3");
+        service.save(toDo3);
+
+        service.remove(null);
+
+        assertEquals(asList(toDo1, toDo3), service.getAll());
+    }
+
+    @Test
     void findByExactDescription() {
         ToDo toDo1 = new ToDo("toDo1");
         service.save(toDo1);
@@ -107,11 +121,25 @@ class ToDoServiceTest {
     }
 
     @Test
+    void findIfDescriptionIsNull() {
+        ToDo toDo1 = new ToDo("toDo1");
+        service.save(toDo1);
+        ToDo toDo2 = new ToDo(null);
+        service.save(toDo2);
+        ToDo toDo3 = new ToDo("todo3");
+        service.save(toDo3);
+
+        assertEquals(singletonList(toDo2), service.findByDescription(null));
+    }
+
+    @Test
     void findByStatusDone() {
         service.save(createToDo(Status.DISCARDED));
         ToDo toDo = createToDo(Status.DONE);
         service.save(toDo);
         service.save(createToDo(Status.NOT_DONE));
+
+        // TODO one call to testable method
 
         assertEquals(1, service.findByStatus(Status.DONE).size());
         assertEquals(toDo, service.findByStatus(Status.DONE).get(0));
@@ -123,6 +151,8 @@ class ToDoServiceTest {
         ToDo toDo = createToDo(Status.NOT_DONE);
         service.save(toDo);
         service.save(createToDo(Status.DONE));
+
+        // TODO one call to testable method
 
         assertEquals(1, service.findByStatus(Status.NOT_DONE).size());
         assertEquals(toDo, service.findByStatus(Status.NOT_DONE).get(0));
@@ -136,8 +166,22 @@ class ToDoServiceTest {
         service.save(toDo);
         service.save(createToDo(Status.DONE));
 
+        // TODO one call to testable method
+
         assertEquals(1, service.findByStatus(Status.DISCARDED).size());
         assertEquals(toDo, service.findByStatus(Status.DISCARDED).get(0));
+    }
+
+    @Test
+    void findIfStatusIsNull() {
+        service.save(createToDo(Status.DISCARDED));
+        ToDo toDo = createToDo(null);
+        service.save(toDo);
+
+        // TODO one call to testable method
+
+        assertEquals(1, service.findByStatus(null).size());
+        assertEquals(toDo, service.findByStatus(null).get(0));
     }
 
     @Test
