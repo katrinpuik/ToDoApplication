@@ -25,8 +25,8 @@ public class ToDoService {
         return repository.getAll();
     }
 
-    public void remove(String toDoToRemove) {
-        repository.remove(toDoToRemove);
+    public void remove(String description) {
+        repository.remove(description);
     }
 
     public List<ToDo> findByDescription(String description) {

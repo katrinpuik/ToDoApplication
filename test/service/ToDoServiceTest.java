@@ -50,9 +50,9 @@ class ToDoServiceTest {
         service.save(toDo);
 
         List<ToDo> allToDos = service.getAll();
+        ToDo updatedToDo = allToDos.get(0);
 
         assertEquals(1, allToDos.size());
-        ToDo updatedToDo = allToDos.get(0);
         assertEquals("new description", updatedToDo.getDescription());
     }
 
@@ -60,14 +60,14 @@ class ToDoServiceTest {
     void removeSelectedToDo() {
         ToDo toDo1 = new ToDo("toDo1");
         service.save(toDo1);
-        ToDo toDo2 = new ToDo("todo2");
+        ToDo toDo2 = new ToDo(null);
         service.save(toDo2);
         ToDo toDo3 = new ToDo("todo3");
         service.save(toDo3);
 
-        service.remove("todo2");
+        service.remove("todo3");
 
-        assertEquals(asList(toDo1, toDo3), service.getAll());
+        assertEquals(asList(toDo1, toDo2), service.getAll());
     }
 
     @Test
@@ -139,10 +139,10 @@ class ToDoServiceTest {
         service.save(toDo);
         service.save(createToDo(Status.NOT_DONE));
 
-        // TODO one call to testable method
+        List<ToDo> toDosWithStatusDone = service.findByStatus(Status.DONE);
 
-        assertEquals(1, service.findByStatus(Status.DONE).size());
-        assertEquals(toDo, service.findByStatus(Status.DONE).get(0));
+        assertEquals(1, toDosWithStatusDone.size());
+        assertEquals(singletonList(toDo), toDosWithStatusDone);
     }
 
     @Test
@@ -152,10 +152,10 @@ class ToDoServiceTest {
         service.save(toDo);
         service.save(createToDo(Status.DONE));
 
-        // TODO one call to testable method
+        List<ToDo> toDosWithStatusNotDone = service.findByStatus(Status.NOT_DONE);
 
-        assertEquals(1, service.findByStatus(Status.NOT_DONE).size());
-        assertEquals(toDo, service.findByStatus(Status.NOT_DONE).get(0));
+        assertEquals(1, toDosWithStatusNotDone.size());
+        assertEquals(singletonList(toDo), toDosWithStatusNotDone);
     }
 
 
@@ -166,10 +166,10 @@ class ToDoServiceTest {
         service.save(toDo);
         service.save(createToDo(Status.DONE));
 
-        // TODO one call to testable method
+        List<ToDo> toDosWithStatusDiscarded = service.findByStatus(Status.DISCARDED);
 
-        assertEquals(1, service.findByStatus(Status.DISCARDED).size());
-        assertEquals(toDo, service.findByStatus(Status.DISCARDED).get(0));
+        assertEquals(1, toDosWithStatusDiscarded.size());
+        assertEquals(singletonList(toDo), toDosWithStatusDiscarded);
     }
 
     @Test
@@ -178,10 +178,10 @@ class ToDoServiceTest {
         ToDo toDo = createToDo(null);
         service.save(toDo);
 
-        // TODO one call to testable method
+        List<ToDo> toDosWithStatusNull = service.findByStatus(null);
 
-        assertEquals(1, service.findByStatus(null).size());
-        assertEquals(toDo, service.findByStatus(null).get(0));
+        assertEquals(1, toDosWithStatusNull.size());
+        assertEquals(singletonList(toDo), toDosWithStatusNull);
     }
 
     @Test

@@ -23,13 +23,14 @@ public class ToDoRepository {
         return toDos;
     }
 
-    public void remove(String toDoToRemove) {
-        toDos.removeIf((ToDo toDo) -> toDo.getDescription() == null || toDo.getDescription().equals(toDoToRemove));
+    public void remove(String description) {
+        toDos.removeIf(toDo -> areToDosDescriptionAndQuerySame(description, toDo));
     }
 
     public List<ToDo> findByDescription(String description) {
         return toDos.stream()
-                .filter(toDo -> toDo.getDescription() == null || toDo.getDescription().toLowerCase().contains(description.toLowerCase()))
+                .filter(toDo ->
+                        areToDosDescriptionAndQuerySame(description, toDo))
                 .collect(Collectors.toList());
     }
 
@@ -37,5 +38,15 @@ public class ToDoRepository {
         return toDos.stream()
                 .filter(toDo -> toDo.getStatus() == null || toDo.getStatus().equals(status))
                 .collect(Collectors.toList());
+    }
+
+    private boolean areToDosDescriptionAndQuerySame(String description, ToDo toDo) {
+        return description == null && toDo.getDescription() == null
+                || (description != null && toDo.getDescription() != null
+                && haveSameLowerCaseValue(description, toDo.getDescription()));
+    }
+
+    private boolean haveSameLowerCaseValue(String value1, String value2) {
+        return value2.toLowerCase().contains(value1.toLowerCase());
     }
 }
