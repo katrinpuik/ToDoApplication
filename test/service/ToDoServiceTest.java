@@ -137,6 +137,7 @@ class ToDoServiceTest {
         service.save(createToDo(Status.DISCARDED));
         ToDo toDo = createToDo(Status.DONE);
         service.save(toDo);
+        service.save(createToDo(null));
         service.save(createToDo(Status.NOT_DONE));
 
         List<ToDo> toDosWithStatusDone = service.findByStatus(Status.DONE);
@@ -151,6 +152,7 @@ class ToDoServiceTest {
         ToDo toDo = createToDo(Status.NOT_DONE);
         service.save(toDo);
         service.save(createToDo(Status.DONE));
+        service.save(createToDo(null));
 
         List<ToDo> toDosWithStatusNotDone = service.findByStatus(Status.NOT_DONE);
 
@@ -164,6 +166,7 @@ class ToDoServiceTest {
         service.save(createToDo(Status.NOT_DONE));
         ToDo toDo = createToDo(Status.DISCARDED);
         service.save(toDo);
+        service.save(createToDo(null));
         service.save(createToDo(Status.DONE));
 
         List<ToDo> toDosWithStatusDiscarded = service.findByStatus(Status.DISCARDED);

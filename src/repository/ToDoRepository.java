@@ -36,14 +36,22 @@ public class ToDoRepository {
 
     public List<ToDo> findByStatus(Status status) {
         return toDos.stream()
-                .filter(toDo -> toDo.getStatus() == null || toDo.getStatus().equals(status))
+                .filter(toDo -> {
+                    return isToDosStatusAndQueryStatusSame(status, toDo);
+                })
                 .collect(Collectors.toList());
     }
 
-    private boolean areToDosDescriptionAndQuerySame(String description, ToDo toDo) {
-        return description == null && toDo.getDescription() == null
-                || (description != null && toDo.getDescription() != null
-                && haveSameLowerCaseValue(description, toDo.getDescription()));
+    private boolean isToDosStatusAndQueryStatusSame(Status queryStatus, ToDo toDo) {
+        return toDo.getStatus() == null && queryStatus == null
+                || queryStatus != null && toDo.getStatus() != null
+                && toDo.getStatus().equals(queryStatus);
+    }
+
+    private boolean areToDosDescriptionAndQuerySame(String query, ToDo toDo) {
+        return query == null && toDo.getDescription() == null
+                || (query != null && toDo.getDescription() != null
+                && haveSameLowerCaseValue(query, toDo.getDescription()));
     }
 
     private boolean haveSameLowerCaseValue(String value1, String value2) {
