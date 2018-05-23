@@ -27,7 +27,7 @@ class ToDoTest {
     @Test
     void setStatusDone() {
         ToDo first = new ToDo("toDoFirst");
-        first.setStatus(Status.DONE);
+        first.setStatus("DONE");
 
         assertEquals(Status.DONE, first.getStatus());
     }
@@ -35,7 +35,7 @@ class ToDoTest {
     @Test
     void setStatusNotDone() {
         ToDo first = new ToDo("toDoFirst");
-        first.setStatus(Status.NOT_DONE);
+        first.setStatus("NOT_DONE");
 
         assertEquals(Status.NOT_DONE, first.getStatus());
     }
@@ -43,7 +43,7 @@ class ToDoTest {
     @Test
     void setStatusDiscarded() {
         ToDo first = new ToDo("toDoFirst");
-        first.setStatus(Status.DISCARDED);
+        first.setStatus("DISCARDED");
 
         assertEquals(Status.DISCARDED, first.getStatus());
     }

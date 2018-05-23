@@ -24,34 +24,31 @@ public class ToDoRepository {
     }
 
     public void remove(String description) {
-        toDos.removeIf(toDo -> areToDosDescriptionAndQuerySame(description, toDo));
+        toDos.removeIf(toDo -> areEqual(description, toDo.getDescription()));
     }
 
     public List<ToDo> findByDescription(String description) {
         return toDos.stream()
-                .filter(toDo ->
-                        areToDosDescriptionAndQuerySame(description, toDo))
+                .filter(toDo -> areEqual(description, toDo.getDescription()))
                 .collect(Collectors.toList());
     }
 
     public List<ToDo> findByStatus(Status status) {
         return toDos.stream()
-                .filter(toDo -> {
-                    return isToDosStatusAndQueryStatusSame(status, toDo);
-                })
+                .filter(toDo -> areEqualStatus(status, toDo))
                 .collect(Collectors.toList());
     }
 
-    private boolean isToDosStatusAndQueryStatusSame(Status queryStatus, ToDo toDo) {
+    private boolean areEqualStatus(Status queryStatus, ToDo toDo) {
         return toDo.getStatus() == null && queryStatus == null
                 || queryStatus != null && toDo.getStatus() != null
                 && toDo.getStatus().equals(queryStatus);
     }
 
-    private boolean areToDosDescriptionAndQuerySame(String query, ToDo toDo) {
-        return query == null && toDo.getDescription() == null
-                || (query != null && toDo.getDescription() != null
-                && haveSameLowerCaseValue(query, toDo.getDescription()));
+    private boolean areEqual(String value1, String value2) {
+        return value1 == null && value2 == null
+                || (value1 != null && value2 != null
+                && haveSameLowerCaseValue(value1, value2));
     }
 
     private boolean haveSameLowerCaseValue(String value1, String value2) {

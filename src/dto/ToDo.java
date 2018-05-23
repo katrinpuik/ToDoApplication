@@ -3,12 +3,17 @@ package dto;
 
 import enums.Status;
 
+import static enums.Status.valueOf;
+
 public class ToDo {
     private String description;
     private Status status;
 
     public ToDo(String description) {
         this.description = description;
+    }
+
+    public ToDo() {
     }
 
     public String getDescription() {
@@ -25,6 +30,14 @@ public class ToDo {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setStatus(String status) {
+        if (status == null) {
+            this.status = null;
+        } else {
+            this.status = valueOf(status);
+        }
     }
 
     @Override

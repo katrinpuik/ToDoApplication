@@ -2,12 +2,9 @@ package service;
 
 import dto.ToDo;
 import enums.Status;
-import exception.ServiceException;
 import repository.ToDoRepository;
 
 import java.util.List;
-
-import static enums.Status.valueOf;
 
 public class ToDoService {
 
@@ -37,14 +34,5 @@ public class ToDoService {
         return repository.findByStatus(status);
     }
 
-    public Status validateAndCreateStatus(String enumToCreate) throws ServiceException {
-        if (enumToCreate == null) {
-            return null;
-        }
-        try {
-            return valueOf(enumToCreate.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new ServiceException("Invalid input");
-        }
-    }
+
 }
