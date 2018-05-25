@@ -1,21 +1,16 @@
 package service;
 
 import dto.ToDo;
-import enums.Status;
-import exception.ServiceException;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ToDoMapper {
 
-    private ToDoService service = new ToDoService();
-
-
     public List<String> serialize(List<ToDo> toDoList) {
         return toDoList.stream()
                 .map(toDo -> {
-                    String description = toDo.getDescription() == null ? "" : toDo.getDescription();
+                    String description = toDo.getDescription();
                     String status = toDo.getStatus() == null ? "" : String.valueOf(toDo.getStatus());
                     return description + "," + status;
                 })
@@ -26,7 +21,7 @@ public class ToDoMapper {
         return stringList.stream()
                 .map((String row) -> {
                     String[] split = row.split(",", -1);
-                    String description = split[0].isEmpty() ? null : split[0];
+                    String description = split[0];
                     String status = split[1].isEmpty() ? null : split[1];
                     return createToDo(description, status);
                 })
@@ -35,16 +30,7 @@ public class ToDoMapper {
 
     private ToDo createToDo(String description, String status) {
         ToDo toDo = new ToDo(description);
-        toDo.setStatus(mapEnumValue(status));
+        toDo.setStatus(status);
         return toDo;
-    }
-
-    private Status mapEnumValue(String status) {
-        try {
-            return service.validateAndCreateStatus(status);
-        } catch (ServiceException e) {
-            System.out.println("Unable to create toDo with status: " + status);
-            return null;
-        }
     }
 }

@@ -21,7 +21,6 @@ public class ToDoValidator {
                 throw new ServiceException("Invalid status");
             }
         }
-
         return true;
     }
 }

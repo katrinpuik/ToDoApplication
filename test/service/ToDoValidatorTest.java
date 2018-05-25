@@ -20,13 +20,13 @@ class ToDoValidatorTest {
     }
 
     @Test
-    void throwsExceptionWhenDescriptionIsEmpty() {
+    void throwsExceptionIfDescriptionIsEmpty() {
         Throwable exception = assertThrows(ServiceException.class, () -> validator.isValidDescription(""));
         assertEquals("Invalid description", exception.getMessage());
     }
 
     @Test
-    void throwsExceptionWhenDescriptionIsNull() {
+    void throwsExceptionIfDescriptionIsNull() {
         Throwable exception = assertThrows(ServiceException.class, () -> validator.isValidDescription(null));
         assertEquals("Invalid description", exception.getMessage());
     }

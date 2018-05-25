@@ -6,14 +6,12 @@ import enums.Status;
 import static enums.Status.valueOf;
 
 public class ToDo {
+    private Integer id;
     private String description;
     private Status status;
 
     public ToDo(String description) {
         this.description = description;
-    }
-
-    public ToDo() {
     }
 
     public String getDescription() {
@@ -28,16 +26,20 @@ public class ToDo {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public void setStatus(String status) {
         if (status == null) {
             this.status = null;
         } else {
             this.status = valueOf(status);
         }
+    }
+
+    public Integer getId(){
+        return id;
+    }
+
+    public void setId (Integer id) {
+        this.id = id;
     }
 
     @Override

@@ -10,8 +10,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class ToDoServiceTest {
@@ -24,14 +23,7 @@ class ToDoServiceTest {
     }
 
     @Test
-    void createNewToDo() {
-        ToDo result = service.create("toDoToTest");
-
-        assertEquals("toDoToTest", result.getDescription());
-    }
-
-    @Test
-    void saveAndGetAllToDos() {
+    void saveAndGetAllToDos() throws ServiceException {
         ToDo toDo1 = new ToDo("toDo1");
         service.save(toDo1);
         ToDo toDo2 = new ToDo("toDo2");
@@ -43,7 +35,70 @@ class ToDoServiceTest {
     }
 
     @Test
-    void saveToDoWithDifferentDescription() {
+    void saveAndAddIds() throws ServiceException {
+        ToDo toDo1 = new ToDo("toDo1");
+        service.save(toDo1);
+        ToDo toDo2 = new ToDo("toDo2");
+        service.save(toDo2);
+
+        assertTrue(toDo1.getId() < toDo2.getId());
+    }
+
+    @Test
+    void updateAndSaveToDo() throws ServiceException {
+        ToDo toDo1 = new ToDo("toDo1");
+        service.save(toDo1);
+        ToDo toDo2 = new ToDo("toDo2");
+        service.save(toDo2);
+        Integer idBeforeDescriptionUpdate = toDo2.getId();
+        ToDo toDo3 = new ToDo("toDo3");
+        service.save(toDo3);
+        toDo2.setDescription("new description");
+        service.save(toDo2);
+        Integer idAfterDescriptionUpdate = toDo2.getId();
+
+        assertEquals("new description", toDo2.getDescription());
+        assertEquals(idBeforeDescriptionUpdate, idAfterDescriptionUpdate);
+    }
+
+    @Test
+    void findById() throws ServiceException {
+        ToDo toDo1 = new ToDo("toDo1");
+        service.save(toDo1);
+        ToDo toDo2 = new ToDo("toDo2");
+        service.save(toDo2);
+
+        ToDo toDoFoundById = service.findById(toDo1.getId());
+
+        assertEquals(toDo1, toDoFoundById);
+    }
+
+    @Test
+    void findByIdResultNull() throws ServiceException {
+        ToDo todo = new ToDo("toDo1");
+        service.save(todo);
+
+        ToDo toDoFoundById = service.findById(todo.getId() + 1);
+
+        assertNull(toDoFoundById);
+    }
+
+    @Test
+    void removeById() throws ServiceException {
+        ToDo toDo1 = new ToDo("toDo1");
+        service.save(toDo1);
+        ToDo toDo2 = new ToDo("toDo2");
+        service.save(toDo2);
+        ToDo toDo3 = new ToDo("toDo3");
+        service.save(toDo3);
+
+        service.remove(toDo2.getId());
+
+        assertEquals(asList(toDo1, toDo3), service.getAll());
+    }
+
+    @Test
+    void saveToDoWithDifferentDescription() throws ServiceException {
         ToDo toDo = new ToDo("toDo1");
         service.save(toDo);
         toDo.setDescription("new description");
@@ -57,7 +112,7 @@ class ToDoServiceTest {
     }
 
     @Test
-    void removeSelectedToDo() {
+    void removeByDescription () throws ServiceException {
         ToDo toDo1 = new ToDo("toDo1");
         service.save(toDo1);
         ToDo toDo2 = new ToDo(null);
@@ -70,22 +125,9 @@ class ToDoServiceTest {
         assertEquals(asList(toDo1, toDo2), service.getAll());
     }
 
-    @Test
-    void removeIfDescriptionIsNull () {
-        ToDo toDo1 = new ToDo("toDo1");
-        service.save(toDo1);
-        ToDo toDo2 = new ToDo(null);
-        service.save(toDo2);
-        ToDo toDo3 = new ToDo("todo3");
-        service.save(toDo3);
-
-        service.remove(null);
-
-        assertEquals(asList(toDo1, toDo3), service.getAll());
-    }
 
     @Test
-    void findByExactDescription() {
+    void findByExactDescription() throws ServiceException {
         ToDo toDo1 = new ToDo("toDo1");
         service.save(toDo1);
         ToDo toDo2 = new ToDo("toDo2");
@@ -97,7 +139,7 @@ class ToDoServiceTest {
     }
 
     @Test
-    void findByExactDescriptionUpperCase() {
+    void findByExactDescriptionUpperCase() throws ServiceException{
         ToDo toDo1 = new ToDo("toDo1");
         service.save(toDo1);
         ToDo toDo2 = new ToDo("todo2");
@@ -109,7 +151,7 @@ class ToDoServiceTest {
     }
 
     @Test
-    void findByDescriptionSomeLetters() {
+    void findByDescriptionSomeLetters() throws ServiceException{
         ToDo toDo1 = new ToDo("toDo1");
         service.save(toDo1);
         ToDo toDo2 = new ToDo("todo2");
@@ -121,19 +163,7 @@ class ToDoServiceTest {
     }
 
     @Test
-    void findIfDescriptionIsNull() {
-        ToDo toDo1 = new ToDo("toDo1");
-        service.save(toDo1);
-        ToDo toDo2 = new ToDo(null);
-        service.save(toDo2);
-        ToDo toDo3 = new ToDo("todo3");
-        service.save(toDo3);
-
-        assertEquals(singletonList(toDo2), service.findByDescription(null));
-    }
-
-    @Test
-    void findByStatusDone() {
+    void findByStatusDone() throws ServiceException {
         service.save(createToDo(Status.DISCARDED));
         ToDo toDo = createToDo(Status.DONE);
         service.save(toDo);
@@ -147,7 +177,7 @@ class ToDoServiceTest {
     }
 
     @Test
-    void findByStatusNotDone() {
+    void findByStatusNotDone() throws ServiceException {
         service.save(createToDo(Status.DISCARDED));
         ToDo toDo = createToDo(Status.NOT_DONE);
         service.save(toDo);
@@ -162,7 +192,7 @@ class ToDoServiceTest {
 
 
     @Test
-    void findByStatusDiscarded() {
+    void findByStatusDiscarded() throws ServiceException {
         service.save(createToDo(Status.NOT_DONE));
         ToDo toDo = createToDo(Status.DISCARDED);
         service.save(toDo);
@@ -176,7 +206,7 @@ class ToDoServiceTest {
     }
 
     @Test
-    void findIfStatusIsNull() {
+    void findIfStatusIsNull() throws ServiceException {
         service.save(createToDo(Status.DISCARDED));
         ToDo toDo = createToDo(null);
         service.save(toDo);
@@ -187,36 +217,9 @@ class ToDoServiceTest {
         assertEquals(singletonList(toDo), toDosWithStatusNull);
     }
 
-    @Test
-    void validateAndCreateStatusDone() throws ServiceException {
-        assertEquals(Status.DONE, service.validateAndCreateStatus("done"));
-    }
-
-    @Test
-    void validateAndCreateStatusNotDone() throws ServiceException {
-        assertEquals(Status.NOT_DONE, service.validateAndCreateStatus("NOT_DONE"));
-    }
-
-    @Test
-    void validateAndCreateStatusDiscarded() throws ServiceException {
-        assertEquals(Status.DISCARDED, service.validateAndCreateStatus("disCARdeD"));
-    }
-
-    @Test
-    void validateAndCreateThrowsExceptionWhenUnableToMapEnum() {
-        Throwable exception = assertThrows(ServiceException.class, () -> service.validateAndCreateStatus("xxx"));
-        assertEquals("Invalid input", exception.getMessage());
-    }
-
-    @Test
-    void validateAndCreateStatusIfInputIsNull() throws ServiceException {
-        assertEquals(null, service.validateAndCreateStatus(null));
-    }
-
     private ToDo createToDo(Status status) {
         ToDo toDo = new ToDo("toDo");
-        toDo.setStatus(status);
+        toDo.setStatus(status == null ? null : status.name());
         return toDo;
     }
-
 }

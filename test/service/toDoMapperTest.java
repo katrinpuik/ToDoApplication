@@ -38,17 +38,6 @@ public class toDoMapperTest {
     }
 
     @Test
-    void deserializeIfDescriptionIsNull() {
-        List<String> controlList = new ArrayList<>();
-        controlList.add(",DONE");
-
-        List<ToDo> toDos = mapper.deserialize(controlList);
-
-        assertNull(toDos.get(0).getDescription());
-        assertEquals(DONE, toDos.get(0).getStatus());
-    }
-
-    @Test
     void deserializeIfStatusIsNull() {
         List<String> controlList = new ArrayList<>();
         controlList.add("Read a book,");
@@ -60,37 +49,15 @@ public class toDoMapperTest {
     }
 
     @Test
-    void deserializeIfStatusIsInvalid() {
-        List<String> controlList = new ArrayList<>();
-        controlList.add("Read a book,wrg");
-
-        List<ToDo> toDos = mapper.deserialize(controlList);
-
-        assertEquals("Read a book", toDos.get(0).getDescription());
-        assertNull(toDos.get(0).getStatus());
-    }
-
-    @Test
-    void deserializeIfDescriptionIsNullAndStatusIsNull() {
-        List<String> controlList = new ArrayList<>();
-        controlList.add(",");
-
-        List<ToDo> toDos = mapper.deserialize(controlList);
-
-        assertNull(toDos.get(0).getDescription());
-        assertNull(toDos.get(0).getStatus());
-    }
-
-    @Test
     void serialize() {
         List<ToDo> controlList = new ArrayList<>();
 
         ToDo toDo1 = new ToDo("Read a book");
-        toDo1.setStatus(DONE);
+        toDo1.setStatus(DONE.name());
         controlList.add(toDo1);
 
         ToDo toDo2 = new ToDo("Take a break");
-        toDo2.setStatus(NOT_DONE);
+        toDo2.setStatus(NOT_DONE.name());
         controlList.add(toDo2);
 
         List<String> toDosAsStrings = mapper.serialize(controlList);
@@ -98,16 +65,6 @@ public class toDoMapperTest {
         assertEquals(2, toDosAsStrings.size());
         assertEquals("Read a book,DONE", toDosAsStrings.get(0));
         assertEquals("Take a break,NOT_DONE", toDosAsStrings.get(1));
-    }
-
-    @Test
-    void serializeIfDescriptionIsNull() {
-        ToDo toDo = new ToDo(null);
-        toDo.setStatus(DONE);
-
-        List<String> toDosAsStrings = mapper.serialize(singletonList(toDo));
-
-        assertEquals(",DONE", toDosAsStrings.get(0));
     }
 
     @Test
@@ -120,13 +77,4 @@ public class toDoMapperTest {
         assertEquals("Read a book,", toDosAsStrings.get(0));
     }
 
-    @Test
-    void serializeIfDescriptionAndStatusAreNull() {
-        ToDo toDo = new ToDo(null);
-        toDo.setStatus(null);
-
-        List<String> toDosAsStrings = mapper.serialize(singletonList(toDo));
-
-        assertEquals(",", toDosAsStrings.get(0));
-    }
 }
