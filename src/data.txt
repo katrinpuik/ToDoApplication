@@ -1,8 +1,8 @@
-ytle tere,DONE
-,NOT_DONE
-,
-,
-hakka toole,NOT_DONE
-ToDoToTest,
-ToDoToTestSecond,
-new description,DONE
+run,NOT_DONE
+walk,NOT_DONE
+test,DONE
+write,DISCARDED
+sleep,
+very important thing to do,NOT_DONE
+not so important thing to do,DISCARDED
+new description,NOT_DONE

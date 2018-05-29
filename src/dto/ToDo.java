@@ -44,7 +44,6 @@ public class ToDo {
 
     @Override
     public String toString() {
-        return description + ", " + String.valueOf(status);
+        return description + ", " + String.valueOf(status) + ", id" + id;
     }
-
 }
